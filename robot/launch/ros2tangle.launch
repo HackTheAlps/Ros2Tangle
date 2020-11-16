@@ -1,0 +1,9 @@
+<launch>
+    <include file="$(find sawyer_sim_examples)/launch/sawyer_pick_and_place_demo.launch">        
+    </include>
+
+    <node pkg="ros2tangle" type="ros2streams.py" name="send_transaction" output="screen">
+        <param name="url" value="#YOUR_GATEWAY_URL#" />
+        <param name="device_id" value="ROS" />
+    </node>
+</launch>
