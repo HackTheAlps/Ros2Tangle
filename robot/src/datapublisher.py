@@ -17,7 +17,6 @@ class DataPublisher(object):
 
             iot2tangle = [ {'sensor': sensor_key, 'data': [rosMsgDict]}]
             
-            #todo: timestamp from robo
             myobj = {'device': self.device_id, 'timestamp': int(time.time()), 'iot2tangle': iot2tangle}
             headers = {'Content-Type': 'application/json'}
             jsonobj = json.dumps(myobj, indent=4)
