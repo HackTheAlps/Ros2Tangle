@@ -11,8 +11,9 @@ and add topics you also want to publish to IOTA streams (by modifying ros2stream
 
 ## Prerequisite
 - ROS Workstation: is setup based on following instructions: [Link](https://sdk.rethinkrobotics.com/intera/Workstation_Setup#Install_ROS)\
-All steps except *SETUP RVIZ* is needed
+All steps except *SETUP RVIZ* are needed
 - Gazebo as the simulation environment: [Link](https://sdk.rethinkrobotics.com/intera/Gazebo_Tutorial)
+- the *robot* folder of the *Ros2Tangle* git repo must be in the *ros_ws/src* folder to be able to execute our Ros2Tangle code for the robot (real or simulation) 
 
 ## Usage
 Set your device_id and your tangle gateway address in the launch file ros2tangle.launch
