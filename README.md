@@ -1,4 +1,4 @@
-![Ros2TangleCover](https://github.com/HackTheAlps/Ros2Tangle/blob/main/cover.png?raw=true)
+![Ros2TangleCover](https://github.com/HackTheAlps/Ros2Tangle/blob/main/img/cover.png?raw=true)
 
 # Ros2Tangle
 In 2019 more than 5.4 million robots are already running on ROS (Robot Operating System). In 2024 it is expected that additional 8.1 million robots are running with ROS. These numbers are taken from [Statista](https://www.statista.com/statistics/1084823/global-ros-based-robot-market-volume/), the global No.1 Business Data Plattform. More and more robots work in our daily lifes (f. ex. agriculture, industrial, environment, supply chain,...).

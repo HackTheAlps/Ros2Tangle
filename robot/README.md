@@ -40,4 +40,4 @@ In the next step the the launch file is executed. This starts the pick-and-place
 
 You should now see the Gazebo window where you see the robot that is trying to pick and place a red cube. 
 
-![sawyer-gazebo-image](https://github.com/HackTheAlps/Ros2Tangle/blob/main/Sawyer_Gazebo.jpg?raw=true)
+![sawyer-gazebo-image](https://raw.githubusercontent.com/HackTheAlps/Ros2Tangle/main/img/Sawyer_Gazebo.jpg)
