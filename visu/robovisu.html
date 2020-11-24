@@ -6,46 +6,57 @@
 			border: 1px solid black;
 		}
 	</style>
+	<meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+	<meta content="utf-8" http-equiv="encoding">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
 	
 var isInCall = true;
+var lastDatasetTimeStamp = 0;
 
 $(document).ready(function(){
 	isInCall = false;
-  	//startPollDecoder();
-	callDecoder();
+  	startPollDecoder();
 });
 
 function startPollDecoder() {
-  setInterval(function(){ callDecoder() }, 500);
+  setInterval(function(){ callDecoder() }, 1000*5);
 }
 
 
 function callDecoder(){
 	var timeCallingDecoder = Date.now();
 	if(isInCall){
-		console.log('return');
+		console.log('API request still not finished... (retry in 5 sec)');
 		return;
 	}
-	console.log('run');
+	isInCall = true;
+	console.log('Call stream decoder');
 
 	$.ajax({
         url: "http://localhost:8585/decode_channel/544c6073272d5b4faeb05b855e8444d488a8d52bbe1b948c61eab563fc297a250000000000000000:261f2c33a5ef2c605ae41d2e",
 		type: "GET",
 		success: function(result) {
-			isInCall = false;
 			console.log('Time needed for one request: ' + Date.now() - timeCallingDecoder);
-			debugger;
 			console.log(result);
-			var jsonObj = JSON.parse(result);
+			
+			var jsonObj;
+			try {
+				jsonObj = JSON.parse(result);
+			} catch(err) {
+				console.log('Recieved response is not a json - Check: is decoder running? Or is decoder getting data from tangle?');
+				return;
+			}
+			
+			if(jsonObj.timestamp < lastDatasetTimeStamp){
+				console.log('same dataset already recieved. Ignore...');
+			}
+			lastDatasetTimeStamp = jsonObj.timestamp;
 			console.log(jsonObj.timestamp + " response from decoder for device " + jsonObj.device);
 
 			var iot2tangle = jsonObj.iot2tangle[0];
-			console.log(iot2tangle);
 
 			var sensor = jsonObj.iot2tangle[0].sensor;
-			console.log(sensor);
 			if(sensor == "joint_states"){
 				processJointStates(jsonObj);
 			} else if (sensor == "state") {
@@ -57,7 +68,7 @@ function callDecoder(){
 			isInCall = false;
 			console.log(error);
 		},
-		timeout: 1000*60*5 // sets timeout to 5 minutes (getting data from tangle takes long)
+		timeout: 1000*60*5 // sets timeout to 5 minutes (getting data from tangle takes long, f.ex. 4.15 min)
     });
 }
 
@@ -65,46 +76,55 @@ function processStates(jsonObj){
 	console.log('process state')
 	var data = jsonObj.iot2tangle[0].data[0];
 
-	console.log('data ' + data);
-	debugger;
-
 	var stateTable = document.getElementById("stateTable");
 	var row = stateTable.insertRow(1);
-	var cell1 = row.insertCell(0);
+
+	var cell0 = row.insertCell(0);
+	cell0.innerHTML = jsonObj.timestamp;
+
+	var cell1 = row.insertCell(1);	
+	cell1.innerHTML = data.enabled;
+
+	var cell2 = row.insertCell(2);
+	cell2.innerHTML = data.error;
 	
-	console.log('data.enabled ' + data.enabled);
-	cell1.innerHTML = "" + true; //data.enabled;
-	var cell2 = row.insertCell(1);
-	cell1.innerHTML = "" + data.error;
-	var cell3 = row.insertCell(2);
-	cell1.innerHTML = "" + data.estop_button;
-	var cell4 = row.insertCell(3);
-	cell1.innerHTML = "" + data.estop_source;
-	var cell5 = row.insertCell(4);
-	cell1.innerHTML = "" + data.estop_homed;
-	var cell6 = row.insertCell(5);
-	cell1.innerHTML = "" + data.lowVoltage;
-	var cell7 = row.insertCell(6);
-	cell1.innerHTML = "" + data.ready;
-	var cell8 = row.insertCell(7);
-	cell1.innerHTML = "" + data.stopped;
+	var cell3 = row.insertCell(3);
+	cell3.innerHTML = data.estop_button;
+	
+	var cell4 = row.insertCell(4);
+	cell4.innerHTML = data.estop_source;
+	
+	var cell5 = row.insertCell(5);
+	cell5.innerHTML = data.homed;
+	
+	var cell6 = row.insertCell(6);
+	cell6.innerHTML = data.lowVoltage;
+	
+	var cell7 = row.insertCell(7);
+	cell7.innerHTML = data.ready;
+	
+	var cell8 = row.insertCell(8);
+	cell8.innerHTML = data.stopped;
 }
 
 function processJointStates(jsonObj){
 	console.log('process joint states')
 	var data = jsonObj.iot2tangle[0].data[0];
-	console.log('data ' + data);
-	debugger;
-
+	
 	var jointStateTable = document.getElementById("jointStateTable");
 	var row = stateTable.insertRow(1);
-	var cell1 = row.insertCell(0);
-	console.log('data effort ' + data.effort);
+	
+	var cell0 = row.insertCell(0);
+	cell0.innerHTML = jsonObj.timestamp;
+
+	var cell1 = row.insertCell(1);
 	cell1.innerHTML = data.effort;
-	var cell2 = row.insertCell(1);
-	cell1.innerHTML = data.position;
-	var cell3 = row.insertCell(2);
-	cell1.innerHTML = data.velocity;
+	
+	var cell2 = row.insertCell(2);
+	cell2.innerHTML = data.position;
+	
+	var cell3 = row.insertCell(3);
+	cell3.innerHTML = data.velocity;
 }
 
 
@@ -112,30 +132,32 @@ function processJointStates(jsonObj){
 </head>
 
 <body>
-<h2>Robo Visu</h2>
+	<h1>ROS data visualization</h1>
+	<img src="https://raw.githubusercontent.com/HackTheAlps/Ros2Tangle/main/img/cover.png" alt="Visu of demo" height="200">
 
-<table id="jointStateTable">
-	<tr>
-		<td>Effort</td>
-		<td>Position</td>
-		<td>Velocity</td>
-	</tr>
-</table>
-
-<p></p>
-
-<table id="stateTable">
-	<tr>
-		<td>Enabled</td>
-		<td>Error</td>
-		<td>estop_button</td>
-		<td>Estop_source</td>
-		<td>Homed</td>
-		<td>LowVoltage</td>
-		<td>Ready</td>
-		<td>Stopped</td>
-	</tr>
-</table>
-
+	<h3>Joint States</h3>
+	<table id="jointStateTable">
+		<tr>
+			<td>Timestamp</td>
+			<td>Effort</td>
+			<td>Position</td>
+			<td>Velocity</td>
+		</tr>
+	</table>
+	<p></p>
+	<h3>States</h3>
+	<table id="stateTable">
+		<tr>
+			<td>Timestamp</td>
+			<td>Enabled</td>
+			<td>Error</td>
+			<td>estop_button</td>
+			<td>Estop_source</td>
+			<td>Homed</td>
+			<td>LowVoltage</td>
+			<td>Ready</td>
+			<td>Stopped</td>
+		</tr>
+	</table>
 </body>
 </html> 
