@@ -24,6 +24,7 @@ Time differences between data generation and data consumption:
 - Robot produces a lot of data, every couple of seconds
 - Gathering data from tangle by the decoder takes approx 4.15 minutes (this time varies)
 Therefore, the data shown in the visu html page shows data in delay.
+- This [video](https://github.com/HackTheAlps/Ros2Tangle/blob/main/img/HackTheAlps%20-%20Iot2Tangle.mp4) shows a small demonstration of our prototype.
 
 ## Side notice
 This project was developed for the [IOT2TANGLE Hackathon](https://hackathon.iot2tangle.io/) (October 26th, 2020 - November 26th, 2020).
