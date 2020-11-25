@@ -12,7 +12,7 @@ In case something is unclear, please let us know so that we can make it clear. T
 - [IOTA streams gateway](https://github.com/iotaledger/streams) is setup and running
 - [IOTA streams decoder](https://github.com/iot2tangle/streams-decoder) is setup with our custom handler (see folder streamsDecoder) and running
 
-## Projet Setup
+## Project Setup
 This project contains tree folders
 - robot: robot data is taken and published to IOTA tangle
 - streams decoder: gathers data of robot from IOTA tangle
@@ -26,7 +26,7 @@ Time differences between data generation and data consumption:
 Therefore, the data shown in the visu html page shows data in delay.
 
 ## Side notice
-This project was developed for the [IOT2Tangle Hackathon](https://hackathon.iot2tangle.io/) (October 26th, 2020 - November 26th, 2020).
+This project was developed for the [IOT2TANGLE Hackathon](https://hackathon.iot2tangle.io/) (October 26th, 2020 - November 26th, 2020).
 
 This Hackathon aims to generate quality open-source integrations that will be valuable stepping-stones for subsequent development projects that connect IOT devices with Distributed Ledger Technologies. Details about the guidelines can be found on [this site](https://hackathon.iot2tangle.io/hackathon-bases.html)
 
